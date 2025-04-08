@@ -2,10 +2,15 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import RNBootSplash
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseAuth
 
 @main
 class AppDelegate: RCTAppDelegate {
   override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
     self.moduleName = "MyApp"
     self.dependencyProvider = RCTAppDependencyProvider()
 
@@ -19,6 +24,11 @@ class AppDelegate: RCTAppDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
   }
+  
+  override func customize(_ rootView: RCTRootView!) {
+      super.customize(rootView)
+      RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView) // ⬅️ initialize the splash screen
+    }
 
   override func bundleURL() -> URL? {
 #if DEBUG
