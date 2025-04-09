@@ -7,7 +7,7 @@ interface UserAvatarProps {
   size?: number;
 }
 
-export const Avatar: React.FC<UserAvatarProps> = ({ photoURL, displayName = "Sivanandam", size = 80 }) => {
+export const Avatar: React.FC<UserAvatarProps> = ({ photoURL, displayName = "User", size = 80 }) => {
   return (
     <View style={[styles.avatarContainer, { width: size, height: size, borderRadius: size / 2 }]}>
       {photoURL ? (

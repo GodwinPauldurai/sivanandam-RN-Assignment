@@ -1,11 +1,10 @@
 // import { Text } from "@react-navigation/elements";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, TextInput, View, Text, Platform, Alert } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text, Platform, Alert } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import MyButton from "../components/MyButton";
 import MyTextInput from "../components/MyTextInput";
-import SocialMedia from "../components/SocialMedia";
-import { createUserWithEmailAndPassword, getAuth, setPersistence } from '@react-native-firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
 import { getApp } from "@react-native-firebase/app";
 import NetInfo from "@react-native-community/netinfo";
@@ -32,9 +31,10 @@ export const RegisterationScreen = ({ navigation }) => {
                 Alert.alert("No internet connection. Please check your network.");
                 return;
             }
-            createUserWithEmailAndPassword(auth, email, password).then(() => {
-                showToast('success', 'User created successfully', '');
+            createUserWithEmailAndPassword(auth, email, password).then(async () => {
                 clearFields();
+                showToast('success', 'User created successfully', '');
+                await auth.signOut();
                 navigation.navigate("Login");
             }).catch((error) => {
                 const errorCode = error.code;
@@ -72,10 +72,6 @@ export const RegisterationScreen = ({ navigation }) => {
                     <View style={styles.registerButtonContainer}>
                         <MyButton title={"Register"} onPress={register} />
                     </View>
-                    <Text style={styles.txtOr}> OR </Text>
-                    <View style={styles.socialMediaComp}>
-                        <SocialMedia />
-                    </View>
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
         width: "93%",
         justifyContent: "center",
         alignItems: "center",
-        height: 430,
+        height: 400,
         flexDirection: "column",
         paddingHorizontal: 20
     },
@@ -125,7 +121,7 @@ const styles = StyleSheet.create({
         paddingTop: 20
     },
     registerButtonContainer: {
-        marginTop: 20,
+        marginTop: "15%",
         width: "100%"
     },
 

@@ -50,11 +50,13 @@ export const LoginScreen = ({ navigation }) => {
                 .then(async (userCredential) => {
                     const currentUser = userCredential.user;
                     await AsyncStorage.setItem("userSession", JSON.stringify(currentUser));
+                   
                     dispatch(setUser({
                         uid: currentUser.uid,
                         email: currentUser.email ?? '',
                         displayName: currentUser.displayName || email,
                     }));
+                    console.log("User :", currentUser);
                     navigation.navigate("Home");
                 })
                 .catch((error) => {
@@ -89,7 +91,7 @@ export const LoginScreen = ({ navigation }) => {
                         <MyTextInput placeholder="Password" value={password} onChangeText={(text: string) => setPassword(text)} secureTextEntry={true} />
                     </View>
                     <TouchableOpacity style={{ alignSelf: "flex-end" }} onPress={() => [navigation.navigate("Register")]}>
-                        <Text style={styles.txtRegisterHere}> Register here</Text>
+                        <Text style={styles.txtRegisterHere}> Don't have an account? Sign up here. </Text>
                     </TouchableOpacity>
                     <MyButton title={"Login"} onPress={login} />
                     <Text style={styles.txtOr}> OR </Text>

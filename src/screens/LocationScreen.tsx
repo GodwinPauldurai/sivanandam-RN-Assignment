@@ -32,95 +32,68 @@ export const LocationScreen = () => {
         return true;
     };
 
-    // // get current loacation
-    // const getCurrentLocation = async () => {
+    // get current loacation
+    const getCurrentLocation = async () => {
 
-    //     try {
-    //         const hasPermission = await requestPermission();
-    //         if (!hasPermission) {
-    //             setLoading(false);
-    //             return;
-    //         }
+        try {
+            const hasPermission = await requestPermission();
+            if (!hasPermission) {
+                setLoading(false);
+                return;
+            }
 
-    //         Geolocation.getCurrentPosition(
-    //             (position) => {
-    //                 const { latitude, longitude } = position.coords;
-    //                 setLocation({ latitude, longitude });
-    //                 setLoading(false);
-    //             },
-    //             (error) => {
-    //                 console.error("Error getting location: ", error);
-    //                 setLoading(false);
-
-    //             },
-    //             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    //         );
-    //     } catch (error) {
-    //         console.error("❌ Unexpected error:", error);
-    //         setLoading(false);
-    //     }
-
-    // };
-
-    // useEffect(() => {
-    //     getCurrentLocation();
-    // }, []);
-
-    // return (
-    //     <View style={styles.container}>
-    //         {
-    //             loading ?
-    //                 (<CircularIndicator />)
-    //                 :
-    //                 (location ? (
-    //                     <MapView style={styles.map}
-    //                         initialRegion={{
-    //                             latitude: location.latitude,
-    //                             longitude: location.longitude,
-    //                             latitudeDelta: 0.01,
-    //                             longitudeDelta: 0.01,
-    //                         }}
-    //                         showsUserLocation={true}
-    //                     >
-    //                         <Marker coordinate={location} title="Yourlocation" />
-    //                     </MapView>
-    //                 )
-    //                     : (
-
-    //                         <Text style={styles.errorText}>Location not available</Text>
-    //                     )
-    //                 )}
-    //     </View>
-    // )
-
-
-    const getLocation = async () => {
-        const hasPermission = await requestPermission();
-
-        if (!hasPermission) {
-            return;
-        }
-        Geolocation.getCurrentPosition(
-            position => {
-                setLocation(position);
-                console.log(position);
-            },
-            error => {
-                Alert.alert(`Code ${error.code}`, error.message);
-                setLocation(null);
-                console.log(error);
-            },
-            {
-                accuracy: {
-                    android: 'high',
-                    ios: 'best',
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setLocation({ latitude, longitude });
+                    setLoading(false);
                 },
-                timeout: 15000,
-                maximumAge: 10000,
-                distanceFilter: 0,
-            },
-        );
+                (error) => {
+                    console.error("Error getting location: ", error);
+                    setLoading(false);
+
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            setLoading(false);
+        }
+
     };
+
+    useEffect(() => {
+        getCurrentLocation();
+    }, []);
+
+
+    // const getLocation = async () => {
+    //     const hasPermission = await requestPermission();
+
+    //     if (!hasPermission) {
+    //         return;
+    //     }
+    //     Geolocation.getCurrentPosition(
+    //         position => {
+    //             setLocation(position);
+    //             console.log(position);
+    //         },
+    //         error => {
+    //             Alert.alert(`Code ${error.code}`, error.message);
+    //             setLocation(null);
+    //             console.log(error);
+    //         },
+    //         {
+    //             accuracy: {
+    //                 android: 'high',
+    //                 ios: 'best',
+    //             },
+    //             timeout: 15000,
+    //             maximumAge: 10000,
+    //             distanceFilter: 0,
+    //         },
+    //     );
+    // };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -143,7 +116,7 @@ export const LocationScreen = () => {
                         onDragEnd={
                             // (e) => Alert.alert(JSON.stringify(e.nativeEvent.coordinate))
                             (e) => {
-                                getLocation();
+                                getCurrentLocation();
                                 console.log(location?.coords.altitude, location?.coords.longitude);
                             }
                         }
