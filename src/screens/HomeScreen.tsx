@@ -56,12 +56,7 @@ export const HomeScreen = () => {
     const Item = ({ item }: ItemProps) => (
         <View style={[styles.userCard, { borderBottomColor: theme.borderBottomColor }]}>
             <Image style={[styles.userImage, { backgroundColor: mode === "dark" ? 'white' : 'black' }]}
-                source={imageError || !item.photo ? require('/Users/sivanandamr/Rnprojects/MyApp/assets/icons/ic_default_user.png') :
-                    {
-                        uri: item.photo
-                    }
-                }
-                onError={() => setImageError(true)}
+                source={{ uri: item.photo }}
             />
             <View style={styles.itemTextContainer}>
                 <Text style={[styles.username, { color: theme.text }]}>{item.name}</Text>
