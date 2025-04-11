@@ -17,7 +17,6 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export const LoginScreen = ({ navigation }) => {
 
-
     const dispatch = useDispatch();
     const [email, setEmail] = useState("siva1@gmail.com");
     const [password, setPassword] = useState("Siva@12345");
@@ -25,16 +24,15 @@ export const LoginScreen = ({ navigation }) => {
     const auth = getAuth(app);
 
     useEffect(() => {
-            GoogleSignin.configure({
-                webClientId: "265900627572-pe501oc1iltu6oi5qjn2bqhila9bnnhp.apps.googleusercontent.com",
-                offlineAccess: false,
-                forceCodeForRefreshToken: false,
-                scopes: ['profile', 'email'],
-            });
-        }, [])
+        GoogleSignin.configure({
+            webClientId: "265900627572-pe501oc1iltu6oi5qjn2bqhila9bnnhp.apps.googleusercontent.com",
+            offlineAccess: false,
+            forceCodeForRefreshToken: false,
+            scopes: ['profile', 'email'],
+        });
+    }, [])
 
     const login = async () => {
-
         let emailRegx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
         if (email == '' || password == '') {
             showToast('error', 'Username or Password should not be empty', '');
@@ -46,24 +44,20 @@ export const LoginScreen = ({ navigation }) => {
                 Alert.alert("No internet connection. Please check your network.");
                 return;
             }
-            signInWithEmailAndPassword(auth, email, password)
-                .then(async (userCredential) => {
-                    const currentUser = userCredential.user;
-                    await AsyncStorage.setItem("userSession", JSON.stringify(currentUser));
-                   
-                    dispatch(setUser({
-                        uid: currentUser.uid,
-                        email: currentUser.email ?? '',
-                        displayName: currentUser.displayName || email,
-                    }));
-                    console.log("User :", currentUser);
-                    navigation.navigate("Home");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    showToast('error', errorMessage, '');
-                });
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const idToken = await userCredential.user.getIdToken();
+                console.log("User signed in successfully.");
+                console.log("ID Token:", idToken);
+                dispatch(setUser({
+                    uid: userCredential.user.uid,
+                    email: userCredential.user.email ?? '',
+                    displayName: userCredential.user.displayName || email,
+                }));
+            } catch (error: any) {
+                const errorMessage = error.message;
+                showToast('error', errorMessage, '');
+            }
         }
     }
 
@@ -77,7 +71,6 @@ export const LoginScreen = ({ navigation }) => {
             autoHide: true
         });
     };
-
 
     return (
         <SafeAreaProvider>

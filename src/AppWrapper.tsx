@@ -39,7 +39,7 @@ export default function AppWrapper() {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
                 setUserState(firebaseUser);
-                AsyncStorage.setItem('userSession', JSON.stringify(firebaseUser));
+                AsyncStorage.setItem('userSession', JSON.stringify(firebaseUser.getIdToken));
                 dispatch(
                     setUser({
                         uid: firebaseUser.uid,
