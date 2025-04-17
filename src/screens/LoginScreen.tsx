@@ -23,14 +23,6 @@ export const LoginScreen = ({ navigation }) => {
     const app = getApp();
     const auth = getAuth(app);
 
-    useEffect(() => {
-        GoogleSignin.configure({
-            webClientId: "265900627572-pe501oc1iltu6oi5qjn2bqhila9bnnhp.apps.googleusercontent.com",
-            offlineAccess: false,
-            forceCodeForRefreshToken: false,
-            scopes: ['profile', 'email'],
-        });
-    }, [])
 
     const login = async () => {
         let emailRegx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -48,7 +40,7 @@ export const LoginScreen = ({ navigation }) => {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const idToken = await userCredential.user.getIdToken();
                 console.log("User signed in successfully.");
-                console.log("ID Token:", idToken);
+                console.log("USER ID Token:", idToken);
                 dispatch(setUser({
                     uid: userCredential.user.uid,
                     email: userCredential.user.email ?? '',

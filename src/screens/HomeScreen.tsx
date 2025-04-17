@@ -1,7 +1,7 @@
 import { Text } from "@react-navigation/elements";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, FlatList, Image, StyleSheet, View } from "react-native";
+import { Alert, Animated, FlatList, Image, StyleSheet, View } from "react-native";
 import { FAILED_TO_FETCH, USERS_ENDPOINT } from "../constants/StringConatants";
 import { CircularIndicator } from "../components/CircularIndicatior";
 import NetInfo from "@react-native-community/netinfo";
@@ -13,8 +13,8 @@ export const HomeScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { theme, mode } = useContext(ThemeContext)!;
-    const [imageError, setImageError] = useState(false);
-
+    // const [imageError, setImageError] = useState(false);
+    const [fadeAnim] = useState(new Animated.Value(0));
     if (!theme) {
         return null;
     }
@@ -38,6 +38,11 @@ export const HomeScreen = () => {
     }
 
     useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start();
         fetchUsers();
     }, [])
 
