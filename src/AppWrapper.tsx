@@ -20,7 +20,7 @@ export default function AppWrapper() {
     const auth = getAuth();
     const dispatch = useDispatch();
     const [user, setUserState] = useState(null);
-    const { hasPermission } = useNotificationPermission();
+    // const { hasPermission } = useNotificationPermission();
     const [fcmToken, setFcmToken] = useState<string | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     
@@ -124,15 +124,15 @@ export default function AppWrapper() {
             }
         };
 
-        const getToken = async () => {
-            try {
-                const token = await messaging().getToken();
-                setFcmToken(token);
-                console.log('FCM Token:', token);
-            } catch (error) {
-                console.log('Failed to get FCM token:', error);
-            }
-        };
+        // const getToken = async () => {
+        //     try {
+        //         const token = await messaging().getToken();
+        //         setFcmToken(token);
+        //         console.log('FCM Token:', token);
+        //     } catch (error) {
+        //         console.log('Failed to get FCM token:', error);
+        //     }
+        // };
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
@@ -145,9 +145,9 @@ export default function AppWrapper() {
                         displayName: firebaseUser.displayName || '',
                     })
                 );
-                if (hasPermission) {
-                    await getToken();
-                }
+                // if (hasPermission) {
+                //     await getToken();
+                // }
             } else {
                 setUserState(null);
                 AsyncStorage.removeItem('userSession');
@@ -169,7 +169,7 @@ export default function AppWrapper() {
             notifeeUnsubscribe();
         };
 
-    }, [hasPermission]);
+    }, []);
 
     const showToast = (type: string, description: string, subText: string) => {
             Toast.show({

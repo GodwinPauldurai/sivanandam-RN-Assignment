@@ -16,7 +16,10 @@
     android:supportsRtl="true">
     <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyBBPe4Scz7sZIgLoaAskIU1pARNRTxozrk"/>
+     android:value="AIzaSyB_DNjIoeweMXYWH6yhA4DGeG87wLdQc98"/> 
+
+     <!-- AIzaSyBBPe4Scz7sZIgLoaAskIU1pARNRTxozrk -->
+    
     <activity
       android:name=".MainActivity"
       android:label="@string/app_name"

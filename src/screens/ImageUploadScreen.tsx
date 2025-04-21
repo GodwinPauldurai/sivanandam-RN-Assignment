@@ -67,7 +67,7 @@ export const ImageUploadScreen = () => {
             const response = await axios.post(MOCK_API_URL, { imageUrl: imageUri });
             
             if (response.status === 201) {
-                Alert.alert('Upload Successful', 'Image URI uploaded to Mock API!', [{ 
+                Alert.alert('Upload Successful', 'Image uploaded to Mock API!', [{ 
                     text: 'OK',
                     onPress: () => setImageUri(null),
                 }]);

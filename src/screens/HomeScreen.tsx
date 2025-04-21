@@ -6,6 +6,8 @@ import { FAILED_TO_FETCH, USERS_ENDPOINT } from "../constants/StringConatants";
 import { CircularIndicator } from "../components/CircularIndicatior";
 import NetInfo from "@react-native-community/netinfo";
 import { ThemeContext } from "../context/ThemeContext";
+import messaging from '@react-native-firebase/messaging';
+import useNotificationPermission from '../customHooks/useNotificationPermission';
 
 
 export const HomeScreen = () => {
@@ -14,6 +16,8 @@ export const HomeScreen = () => {
     const [error, setError] = useState<string | null>(null);
     const { theme, mode } = useContext(ThemeContext)!;
     // const [imageError, setImageError] = useState(false);
+    const { hasPermission } = useNotificationPermission();
+    const [fcmToken, setFcmToken] = useState<string | null>(null);
     const [fadeAnim] = useState(new Animated.Value(0));
     if (!theme) {
         return null;
@@ -42,9 +46,23 @@ export const HomeScreen = () => {
             toValue: 1,
             duration: 1000,
             useNativeDriver: true,
-          }).start();
+        }).start();
+
+        const getToken = async () => {
+            try {
+                const token = await messaging().getToken();
+                setFcmToken(token);
+                console.log('FCM Token from HomeScreen:', token);
+            } catch (error) {
+                console.log('Failed to get FCM token in HomeScreen:', error);
+            }
+        };
+
+        if (hasPermission) {
+            getToken();
+        }
         fetchUsers();
-    }, [])
+    }, [hasPermission])
 
     type ItemProps = {
         item: {

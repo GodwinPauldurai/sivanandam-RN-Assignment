@@ -18,8 +18,8 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 export const LoginScreen = ({ navigation }) => {
 
     const dispatch = useDispatch();
-    const [email, setEmail] = useState("siva1@gmail.com");
-    const [password, setPassword] = useState("Siva@12345");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const app = getApp();
     const auth = getAuth(app);
 
